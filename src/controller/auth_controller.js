@@ -15,10 +15,14 @@ const authController = {
             const email = req.body.email;
             console.log(email);
             const founduser = await UserModel.findOne({ email: email });
+            const foundemail = await UserModel.findOne({ email: email });
             if (founduser) {
 
-                return res.json({ success: false, error: "Email already registered" });
+                return res.status(400).json({ success: false, error: "Username already registered" });
 
+            }
+            if(foundemail){
+                return res.status(400).json({ success: false, error: "Email already registered" } );
             }
             const password = userData.password;
             const salt = await bcrypt.genSalt(10);
@@ -39,14 +43,15 @@ const authController = {
             const userName = req.body.userName;
             const password = req.body.password;
             const founduser = await UserModel.findOne({ userName: userName });
+            
             if (!founduser) {
                 console.log(userName);
-                res.json({ success: false, error: "No user found" });
+                res.status(400).json({ success: false, error: "No user found" });
                 return;
             }
             const correctPassword = await bcrypt.compare(password, founduser.password);
             if (!correctPassword) {
-                res.json({ success: false, error: "Incorrect password" });
+                res.status(400).json({ success: false, error: "Incorrect password" });
                 return;
             }
 
