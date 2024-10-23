@@ -14,7 +14,7 @@ const authController = {
             const userData = req.body;
             const email = req.body.email;
             console.log(email);
-            const founduser = await UserModel.findOne({ email: email });
+            const founduser = await UserModel.findOne({ userName: req.body.userName });
             const foundemail = await UserModel.findOne({ email: email });
             if (founduser) {
 
